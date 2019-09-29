@@ -3,10 +3,22 @@ import pandas as pd
 
 df=pd.read_csv("Train.csv")
 
-df=df[1:10]
+
+#remove columns that have all nan values
+#Col1 and Col2 have id and target values
+        
+for i in range(3,2395):
+    try:
+        p=all(df['Col{}'.format(i)].isnull())
+        if p :
+            df=df.drop(['Col{}'.format(i)],axis=1)
+    except KeyError:
+        pass
+
+
 
 #remove those columns that have 70% null values 
-for i in range(3,999):
+for i in range(3,2398):
     try:
         sum_Nan=df['Col{}'.format(i)].isnull().sum()
         #70% data nan then remove columns
@@ -28,16 +40,37 @@ for i in range(3,999):
     except KeyError:
         pass
 
+#extract featrues and labels
+labels=df['Col2'].values        
+features=df.iloc[:,2:]
 
+
+#now perform decimal scalling
         
-        
-for i in range(3,2395):
-    try:
-        p=all(df['Col{}'.format(i)].isnull())
-        if p :
-            df=df.drop(['Col{}'.format(i)],axis=1)
-    except KeyError:
-        pass
+from sklearn.preprocessing import StandardScaler   
+sc=StandardScaler()
+
+features=sc.fit_transform(features)
 
 
-df['Col37'].isnull().sum()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     
